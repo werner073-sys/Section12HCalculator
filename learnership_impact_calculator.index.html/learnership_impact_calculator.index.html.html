@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Section 12H Learnership: Financial Impact Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .input-group label {
+            color: #4A5568; /* gray-700 */
+        }
+        .result-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #E2E8F0; /* gray-200 */
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #E2E8F0; /* gray-200 */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-5xl mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-8">
+        
+        <header class="text-center mb-8">
+            <img src="https://assets.website-files.com/6447005b72f161811b939f52/646c596b52a326a27e692135_be-aligned-logo.png" alt="Be Aligned Company Logo" class="mx-auto h-24 w-auto mb-4">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Section 12H & B-BBEE Impact Calculator</h1>
+            <p class="text-gray-600 mt-2">Calculate the full financial impact of your learnership program, including tax savings and B-BBEE benefits.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Input Forms -->
+            <div class="space-y-6">
+                <!-- Company Financials -->
+                <div class="bg-gray-100 p-6 rounded-lg">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Company Financials</h2>
+                    <div class="space-y-4">
+                         <div class="input-group">
+                            <label for="taxableIncome" class="block text-sm font-medium mb-1">Taxable Income (Before Learnership Deductions)</label>
+                            <input type="number" id="taxableIncome" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 transition" placeholder="e.g., 500000" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="taxRate" class="block text-sm font-medium mb-1">Company Tax Rate (%)</label>
+                            <input type="number" id="taxRate" value="27" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 transition" placeholder="e.g., 27" required>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 pt-2">
+                             <div class="input-group">
+                                <label for="edTarget" class="block text-sm font-medium mb-1">Enterprise Dev. Target (%)</label>
+                                <input type="number" id="edTarget" value="1" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 transition" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="sdTarget" class="block text-sm font-medium mb-1">Supplier Dev. Target (%)</label>
+                                <input type="number" id="sdTarget" value="2" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 transition" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learnership Details -->
+                <div class="bg-gray-100 p-6 rounded-lg">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Learnership Details & Expenses</h2>
+                    <form id="calculatorForm" class="space-y-4">
+                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="input-group">
+                                <label for="numberOfLearners" class="block text-sm font-medium mb-1">Number of Learners</label>
+                                <input type="number" id="numberOfLearners" value="1" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 transition" placeholder="e.g., 5" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="learnershipDuration" class="block text-sm font-medium mb-1">Learnership Duration (Months)</label>
+                                <input type="number" id="learnershipDuration" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 transition" placeholder="e.g., 12" required>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="input-group">
+                                <label for="courseFee" class="block text-sm font-medium mb-1">Course Fee (per learner)</label>
+                                <input type="number" id="courseFee" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 transition" placeholder="Optional">
+                            </div>
+                            <div class="input-group">
+                                <label for="otherExpenses" class="block text-sm font-medium mb-1">Other Expenses (per learner)</label>
+                                <input type="number" id="otherExpenses" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 transition" placeholder="Optional">
+                            </div>
+                        </div>
+                        <div class="input-group pt-2">
+                             <label class="flex items-center">
+                                <input type="checkbox" id="isDisabled" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <span class="ml-2 text-sm font-medium">Learner(s) with a disability</span>
+                            </label>
+                        </div>
+                        <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-md hover:bg-indigo-700 transition duration-300 ease-in-out transform hover:scale-105">
+                            Calculate Financial Impact
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Results Display -->
+            <div id="results" class="bg-white p-6 rounded-lg result-card flex flex-col justify-center">
+                 <div class="text-center">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                    <h3 class="mt-2 text-lg font-medium text-gray-900">Your results will appear here</h3>
+                    <p class="mt-1 text-sm text-gray-500">
+                        Fill in all fields and click the button to see the impact.
+                    </p>
+                 </div>
+            </div>
+        </div>
+         <footer class="text-center text-xs text-gray-500 mt-8">
+            <p><strong>Disclaimer:</strong> This calculator is for estimation purposes only and does not constitute financial advice. It is based on the updated Section 12H fixed-amount rebates. Consult a tax and B-BBEE professional for accurate calculations.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        const form = document.getElementById('calculatorForm');
+        const resultsDiv = document.getElementById('results');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // --- Get Company Financials ---
+            const taxableIncome = parseFloat(document.getElementById('taxableIncome').value);
+            const taxRate = parseFloat(document.getElementById('taxRate').value);
+            const edTarget = parseFloat(document.getElementById('edTarget').value);
+            const sdTarget = parseFloat(document.getElementById('sdTarget').value);
+
+            // --- Get Learnership Details & Expenses ---
+            const numberOfLearners = parseInt(document.getElementById('numberOfLearners').value);
+            const duration = parseInt(document.getElementById('learnershipDuration').value);
+            const isDisabled = document.getElementById('isDisabled').checked;
+            const courseFee = parseFloat(document.getElementById('courseFee').value) || 0;
+            const otherExpenses = parseFloat(document.getElementById('otherExpenses').value) || 0;
+
+
+            // --- Validation ---
+            if (isNaN(taxableIncome) || isNaN(taxRate) || isNaN(duration) || isNaN(edTarget) || isNaN(sdTarget) || isNaN(numberOfLearners) || isNaN(courseFee) || isNaN(otherExpenses)) {
+                displayError("Please fill in all required fields with valid numbers.");
+                return;
+            }
+
+            if (taxRate < 0 || taxableIncome <= 0 || duration < 1 || edTarget < 0 || sdTarget < 0 || numberOfLearners < 1 || courseFee < 0 || otherExpenses < 0) {
+                 displayError("Financial values, targets, and learners must be positive. Duration must be at least 1 month.");
+                 return;
+            }
+            
+            // --- Deduction Calculation Logic ---
+            const singleLearnerDeduction12H = calculateDeduction12H(duration, isDisabled);
+            const totalDeduction12H = singleLearnerDeduction12H * numberOfLearners;
+            const totalOtherDeductibleExpenses = (courseFee + otherExpenses) * numberOfLearners;
+            const totalCombinedDeductions = totalDeduction12H + totalOtherDeductibleExpenses;
+
+            // --- Tax Impact Calculation ---
+            const netProfitBeforeTax = taxableIncome;
+            const taxPayableBefore = netProfitBeforeTax * (taxRate / 100);
+            const netProfitAfterTaxBefore = netProfitBeforeTax - taxPayableBefore;
+            
+            const newTaxableIncome = netProfitBeforeTax - totalCombinedDeductions;
+            const taxPayableAfter = newTaxableIncome > 0 ? newTaxableIncome * (taxRate / 100) : 0;
+            const taxSaving = taxPayableBefore - taxPayableAfter;
+            const newNetProfitAfterTax = newTaxableIncome - taxPayableAfter;
+
+            // --- B-BBEE Impact Calculation ---
+            const edSpendBefore = netProfitAfterTaxBefore * (edTarget / 100);
+            const edSpendAfter = newNetProfitAfterTax * (edTarget / 100);
+            const sdSpendBefore = netProfitAfterTaxBefore * (sdTarget / 100);
+            const sdSpendAfter = newNetProfitAfterTax * (sdTarget / 100);
+            
+            const totalBeeSpendBefore = edSpendBefore + sdSpendBefore;
+            const totalBeeSpendAfter = edSpendAfter + sdSpendAfter;
+            const totalBeeReduction = totalBeeSpendBefore - totalBeeSpendAfter;
+            
+            displayResults({
+                totalDeduction12H,
+                totalOtherDeductibleExpenses,
+                numberOfLearners,
+                taxableIncome, newTaxableIncome,
+                taxPayableBefore, taxPayableAfter, taxSaving,
+                netProfitAfterTaxBefore, newNetProfitAfterTax,
+                edSpendBefore, edSpendAfter, sdSpendBefore, sdSpendAfter,
+                totalBeeReduction
+            });
+        });
+        
+        function calculateDeduction12H(duration, isDisabled){
+            const baseDeductionPer12Months = isDisabled ? 120000 : 80000;
+            const totalDeductionForDuration = (baseDeductionPer12Months / 12) * duration;
+            return totalDeductionForDuration;
+        }
+
+        function displayError(message) {
+             resultsDiv.innerHTML = `
+                <div class="text-center text-red-600 bg-red-50 p-6 rounded-lg">
+                    <h3 class="font-bold text-lg">Calculation Error</h3>
+                    <p>${message}</p>
+                </div>`;
+        }
+
+        function displayResults(data) {
+            const formatter = new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            resultsDiv.innerHTML = `
+                <h2 class="text-2xl font-bold text-gray-800 mb-2 text-center">Financial Impact Summary</h2>
+                
+                <!-- Deductions Breakdown -->
+                 <div class="bg-indigo-50 p-4 rounded-lg text-center mb-4">
+                     <div>
+                        <div>
+                            <p class="text-sm text-indigo-800 font-semibold">Total Section 12H Allowance</p>
+                            <p class="text-xl font-extrabold text-indigo-900">${formatter.format(data.totalDeduction12H)}</p>
+                        </div>
+                        <div class="mt-2">
+                            <p class="text-sm text-indigo-800 font-semibold">Other Deductible Expenses</p>
+                            <p class="text-xl font-extrabold text-indigo-900">${formatter.format(data.totalOtherDeductibleExpenses)}</p>
+                        </div>
+                     </div>
+                </div>
+
+                <!-- Tax Impact Section -->
+                <div class="space-y-1 text-gray-700">
+                     <div class="summary-row">
+                        <span class="font-medium">Tax Payable (Before):</span>
+                        <span class="font-semibold">${formatter.format(data.taxPayableBefore)}</span>
+                    </div>
+                     <div class="summary-row">
+                        <span class="font-medium">Tax Payable (After):</span>
+                        <span class="font-semibold">${formatter.format(data.taxPayableAfter)}</span>
+                    </div>
+                </div>
+                <div class="mt-4 bg-green-100 p-3 rounded-lg text-center">
+                    <p class="text-sm font-medium text-green-800">Total Tax Saving</p>
+                    <p class="text-2xl font-extrabold text-green-900">${formatter.format(data.taxSaving)}</p>
+                </div>
+
+                <!-- B-BBEE Impact Section -->
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold text-gray-700 text-center mb-2 border-t pt-4">B-BBEE Scorecard Impact</h3>
+                     <div class="space-y-1 text-gray-700">
+                        <div class="summary-row">
+                            <span class="font-medium">NPAT (Before Deductions):</span>
+                            <span class="font-semibold">${formatter.format(data.netProfitAfterTaxBefore)}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="font-medium">NPAT (After Deductions):</span>
+                            <span class="font-semibold">${formatter.format(data.newNetProfitAfterTax)}</span>
+                        </div>
+                         <div class="summary-row">
+                            <span class="font-medium">Total B-BBEE Spend (Before):</span>
+                            <span class="font-semibold">${formatter.format(data.edSpendBefore + data.sdSpendBefore)}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="font-medium">Total B-BBEE Spend (After):</span>
+                            <span class="font-semibold">${formatter.format(data.edSpendAfter + data.sdSpendAfter)}</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 bg-blue-100 p-3 rounded-lg text-center">
+                        <p class="text-sm font-medium text-blue-800">Total B-BBEE Spend Reduction</p>
+                        <p class="text-2xl font-extrabold text-blue-900">${formatter.format(data.totalBeeReduction)}</p>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
+
